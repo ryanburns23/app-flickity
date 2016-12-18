@@ -1,5 +1,6 @@
 # \<app-flickity\>
 
-See the [component page](https://ryanburns23.github.io/app-flickity/) for more information.
+[Docs](http://ryanburns.io/#/elements/app-flickity/docs)
+[Demo](http://ryanburns.io/#/elements/app-flickity/demo)
 
-Used on [Ryan Burns Designs](http://ryanburnsdesigns.com/#/portfolio/1)
+Used on [ryanburns.io](http://ryanburns.io/#/portfolio/construction-document-viewer)
