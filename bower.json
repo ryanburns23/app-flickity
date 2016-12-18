@@ -1,0 +1,15 @@
+{
+  "name": "app-flickity",
+  "description": "flickity polymer wrapper",
+  "main": "app-flickity.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.4.0",
+    "flickity": "^2.0.5"
+  },
+  "devDependencies": {
+    "iron-component-page": "ryanburns23/iron-component-page",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0"
+  }
+}

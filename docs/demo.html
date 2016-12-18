@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+    <title>App Flickity Doc's</title>
+
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="bower_components/app-flickity/app-flickity.html">
+    <link rel="import" href="bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="bower_components/iron-demo-helpers/demo-snippet.html">
+
+    <style>
+      body {
+        overflow: auto;
+        margin: 0;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        line-height: 1.5;
+        background-color: #303030;
+      }
+      .container{
+        margin: 0px auto;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      demo-snippet{
+        margin: 20px 0;
+      }
+      h3{
+        color: #eee;
+      }
+      app-flickity{
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <div class="container">
+
+      <demo-snippet>
+        <template>
+          <app-flickity>
+            <div cell>1</div>
+            <div cell>2</div>
+            <div cell>3</div>
+          </app-flickity>
+        </template>
+      </demo-snippet>
+
+      <div class="vertical-section-container centered">
+        <h3>Selectable Cell</h3>
+        <demo-snippet>
+          <template>
+            <style>
+            #selectable [cell].is-selected {
+              background: black;
+              color: white;
+            }
+            </style>
+
+            <app-flickity id="selectable">
+              <div cell>1</div>
+              <div cell>2</div>
+              <div cell>3</div>
+            </app-flickity>
+          </template>
+        </demo-snippet>
+      </div>
+
+      <div class="vertical-section-container centered">
+        <h3>Dom Repeat</h3>
+        <demo-snippet>
+          <template>
+            <app-flickity>
+              <template is="dom-repeat" items="[1,2,3,4,5]">
+                <div cell>[[item]]</div>
+              </template>
+            </app-flickity>
+          </template>
+        </demo-snippet>
+      </div>
+
+
+      <div class="vertical-section-container centered">
+        <h3>Images</h3>
+        <demo-snippet>
+          <template>
+            <app-flickity>
+              <img cell src="http://placekitten.com/g/900/900">
+              <img cell src="http://placekitten.com/g/900/900">
+              <img cell src="http://placekitten.com/g/900/900">
+              <img cell src="http://placekitten.com/g/900/900">
+            </app-flickity>
+          </template>
+        </demo-snippet>
+      </div>
+
+      <div class="vertical-section-container centered">
+        <h3>Options</h3>
+        <demo-snippet>
+          <template>
+            <style>
+              .flickity{
+                width: 66%;
+                height: 200px;
+                margin-right: 10px;
+                background: #8C8;
+                border-radius: 5px;
+              }
+            </style>
+
+            <app-flickity auto-play cell-selector=".flickity" cell-align="left">
+              <template is="dom-repeat" items="[1,2,3,4,5]">
+                <div class="flickity">[[item]]</div>
+              </template>
+            </app-flickity>
+          </template>
+        </demo-snippet>
+      </div>
+
+    </div>
+
+
+  </body>
+</html>

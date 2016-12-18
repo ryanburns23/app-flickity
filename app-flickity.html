@@ -1,0 +1,137 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="flickity-import.html">
+<link rel="import" href="flickity-styles.html">
+
+<!--
+`<app-flickity>`
+Flickity as a Polymer Element
+
+### Flickity Doc's
+
+[Options](http://flickity.metafizzy.co/options.html) | [Style](http://flickity.metafizzy.co/style.html) | [API](http://flickity.metafizzy.co/api.html)
+
+### Styling
+
+`<app-flickity>` provides the following custom properties and mixins
+for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--app-flickity-cell` | Mixin applied to the cell with class of 'flickity-cell' | `{width: 66%; height: 200px; margin-right: 10px; background: #8C8; border-radius: 5px;}`
+
+@demo demo/index.html
+-->
+
+<dom-module id="app-flickity">
+  <template strip-whitespace>
+    <style include="flickity-styles"></style>
+
+    <content id="content"></content>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'app-flickity',
+
+      properties: {
+        /**
+         * <a target="_blank" href="http://flickity.metafizzy.co/options.html#cellselector">cellSelector</a> selector for cell elements. cellSelector is useful if you have other elements in your carousel elements that are not cells.
+         *
+         */
+        cellSelector: {
+          type: String,
+          value: "[cell]"
+        },
+        /**
+         * <a target="_blank" href="http://flickity.metafizzy.co/options.html#cellalign">cellSelector</a> Align cells within the carousel element.
+         *
+         */
+        cellAlign: {
+          type: String,
+          value: "center"
+        },
+        /**
+         * <a target="_blank" href="http://flickity.metafizzy.co/options.html#autoplay">autoPlay</a> Automatically advances to the next cell. <br><br> Auto-playing will pause when mouse is hovered over, and resume when mouse is hovered off. Auto-playing will stop when the carousel is clicked or a cell is selected.
+         *
+         */
+        autoPlay: {
+          type: Boolean,
+          value: false
+        },
+      },
+      /**
+       * Remove Flickity functionality completely. destroy will return the element back to its pre-initialized state.
+       *
+       */
+      destroy: function() {
+        if(this.flickity){
+          this.flickity.destroy();
+          this.flickity = null;
+        }
+      },
+      /**
+       * Re-collect all cell elements in flickity-slider.
+       *
+       */
+      reload: function() {
+        this.flickity.reloadCells();
+      },
+      /**
+       * init flickity.
+       *
+       */
+      init: function() {
+        this.flickity = new Flickity(this, {
+          autoPlay: this.autoPlay,
+          cellSelector: this.cellSelector,
+          cellAlign: this.cellAlign,
+         });
+      },
+      /**
+       * Select a slide.
+       *
+       */
+      select: function(index) {
+        if(this.flickity){
+          this.flickity.select(index);
+        }
+      },
+
+      attached: function() {
+        var _this = this;
+        if ( this.queryEffectiveChildren('template') ) {
+          this.queryEffectiveChildren('template').addEventListener('dom-change', function() {
+            //console.log("template dom-change");
+            if(_this.flickity){
+              if(_this.flickity.getCellElements().length != _this.queryAllEffectiveChildren(this.cellSelector)){
+              //console.log("destroy");
+              _this.destroy();
+              _this._childrenChanged();
+              }
+            }
+          });
+        }
+        this._observer = Polymer.dom(this.$.content).observeNodes(function(info) {
+          _this._childrenChanged(info);
+        });
+      },
+
+      _childrenChanged: function(info){
+        //https://www.polymer-project.org/1.0/docs/devguide/local-dom#observe-nodes
+        if(this.queryEffectiveChildren(this.cellSelector)){
+          if(!this.flickity) {
+            if(this.queryEffectiveChildren('template')){
+              //console.log("Render Template");
+              this.queryEffectiveChildren('template').render();
+              this.init();
+            }else{
+              this.init();
+            }
+          }
+        }
+      }
+
+    });
+  </script>
+</dom-module>
