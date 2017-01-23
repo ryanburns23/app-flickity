@@ -59,6 +59,30 @@ Custom property | Description | Default
           type: Boolean,
           value: false
         },
+        /**
+         * <a target="_blank" href="http://flickity.metafizzy.co/options.html#freescroll">freeScroll</a> Enables content to be freely scrolled and flicked without aligning cells to an end position.
+         *
+         */
+        freeScroll: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * <a target="_blank" href="http://flickity.metafizzy.co/options.html#pagedots">pageDot</a>
+         * Hides page dots.
+         */
+        hidePageDots: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * <a target="_blank" href="http://flickity.metafizzy.co/options.html#wraparound">wrapAround</a>
+         * At the end of cells, wrap-around to the other end for infinite scrolling.
+         */
+        wrapAround: {
+          type: Boolean,
+          value: false
+        },
       },
       /**
        * Remove Flickity functionality completely. destroy will return the element back to its pre-initialized state.
@@ -86,6 +110,10 @@ Custom property | Description | Default
           autoPlay: this.autoPlay,
           cellSelector: this.cellSelector,
           cellAlign: this.cellAlign,
+          cellAlign: this.cellAlign,
+          freeScroll: this.freeScroll,
+          pageDots: !this.hidePageDots,
+          wrapAround: this.wrapAround
          });
       },
       /**
@@ -99,22 +127,10 @@ Custom property | Description | Default
       },
 
       attached: function() {
-        var _this = this;
-        if ( this.queryEffectiveChildren('template') ) {
-          this.queryEffectiveChildren('template').addEventListener('dom-change', function() {
-            //console.log("template dom-change");
-            if(_this.flickity){
-              if(_this.flickity.getCellElements().length != _this.queryAllEffectiveChildren(this.cellSelector)){
-              //console.log("destroy");
-              _this.destroy();
-              _this._childrenChanged();
-              }
-            }
-          });
-        }
+        this._checkIfTemplate();
         this._observer = Polymer.dom(this.$.content).observeNodes(function(info) {
-          _this._childrenChanged(info);
-        });
+          this._childrenChanged(info);
+        }.bind(this));
       },
 
       _childrenChanged: function(info){
@@ -122,13 +138,25 @@ Custom property | Description | Default
         if(this.queryEffectiveChildren(this.cellSelector)){
           if(!this.flickity) {
             if(this.queryEffectiveChildren('template')){
-              //console.log("Render Template");
               this.queryEffectiveChildren('template').render();
               this.init();
             }else{
               this.init();
             }
           }
+        }
+      },
+
+      _checkIfTemplate: function(){
+        if ( this.queryEffectiveChildren('template') ) {
+          this.queryEffectiveChildren('template').addEventListener('dom-change', function() {
+            if(this.flickity){
+              if(this.flickity.getCellElements().length != this.queryAllEffectiveChildren(this.cellSelector)){
+              this.destroy();
+              this._childrenChanged();
+              }
+            }
+          }.bind(this));
         }
       }
 
