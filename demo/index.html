@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>paper-form demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../paper-button/paper-button.html">
+    <link rel="import" href="../app-flickity.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body>
+
+    <dom-module id="demo-flickity">
+      <template>
+        <style>
+          :host{
+            display: block;
+            max-width: 600px;
+            margin: 0 auto;
+          }
+          .actions{
+            margin-top: 20px;
+
+          }
+        </style>
+
+        <app-flickity id="flickity" hide-page-dots wrap-around>
+          <template is="dom-repeat" items="[[items]]">
+            <div cell>[[index]]</div>
+          </template>
+        </app-flickity>
+
+
+        <div class="actions">
+          <paper-button raised on-tap="init" type="button" name="button">init</paper-button>
+          <paper-button raised on-tap="destroy" type="button" name="button">destroy</paper-button>
+          <paper-button raised on-tap="previous" type="button" name="button">PREVIOUS</paper-button>
+          <paper-button raised on-tap="swap" type="button" name="button">SWAP DATA</paper-button>
+          <paper-button raised on-tap="next" type="button" name="button">NEXT</paper-button>
+        </div>
+
+      </template>
+      <script>
+        Polymer({
+          is: 'demo-flickity',
+
+          properties: {
+            items: {
+              type: Array,
+              value: [
+                "http://placekitten.com/g/2000/3000",
+                "http://placekitten.com/g/2000/3000",
+                "http://placekitten.com/g/2000/3000",
+                "http://placekitten.com/g/2000/3000"
+              ]
+            },
+            count: {
+              type: Number,
+              value: 0
+            },
+          },
+
+          init: function(){
+            this.$.flickity.init();
+          },
+          destroy: function(){
+            this.$.flickity.destroy();
+          },
+          previous: function(){
+            this.$.flickity.previous();
+          },
+          next: function(){
+            this.$.flickity.next();
+          },
+          swap: function(){
+            if (this.count == 0) {
+              this.items = [
+                "http://placekitten.com/g/2000/3000",
+                "http://placekitten.com/g/2000/3000",
+                "http://placekitten.com/g/2000/3000"
+              ];
+              this.count = 1;
+            }else {
+              this.items = [ "1","1","1","1","1","1" ];
+              this.count = 0;
+
+            }
+          },
+
+        });
+      </script>
+    </dom-module>
+
+    <demo-flickity></demo-flickity>
+  </body>
+</html>

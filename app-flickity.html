@@ -6,6 +6,9 @@
 `<app-flickity>`
 Flickity as a Polymer Element
 
+## Note
+Page dots will only work under shady dom... For now
+
 ### Flickity Doc's
 
 [Options](http://flickity.metafizzy.co/options.html) | [Style](http://flickity.metafizzy.co/style.html) | [API](http://flickity.metafizzy.co/api.html)
@@ -17,7 +20,10 @@ for styling:
 
 Custom property | Description | Default
 ----------------|-------------|----------
-`--app-flickity-cell` | Mixin applied to the cell with class of 'flickity-cell' | `{width: 66%; height: 200px; margin-right: 10px; background: #8C8; border-radius: 5px;}`
+`--app-flickity-cell` | Mixin applied to the cell with an attribute of '[cell]' | `{width: 66%; height: 200px; margin-right: 10px; background: #8C8; border-radius: 5px;}`
+`--flickity-prev-next-button` | Mixin applied to the previous next buttons
+`--flickity-prev-next-button-arrow-color` | Arrow Color | #333
+`--app-flickity-dots` | Mixin applied to the flickity dots
 
 @demo demo/index.html
 -->
@@ -83,16 +89,24 @@ Custom property | Description | Default
           type: Boolean,
           value: false
         },
+        /**
+         * The selected index.
+         */
+        selectedIndex: {
+          type: Number,
+          notify: true,
+          readonly: true
+        }
       },
+
+
       /**
        * Remove Flickity functionality completely. destroy will return the element back to its pre-initialized state.
        *
        */
       destroy: function() {
-        if(this.flickity){
-          this.flickity.destroy();
-          this.flickity = null;
-        }
+        this.flickity.destroy();
+        this.flickity = null;
       },
       /**
        * Re-collect all cell elements in flickity-slider.
@@ -115,49 +129,57 @@ Custom property | Description | Default
           pageDots: !this.hidePageDots,
           wrapAround: this.wrapAround
          });
+        this.flickity.on( 'select', function() { this.selectedIndex = this.flickity.selectedIndex; }.bind(this))
+      },
+      /**
+       * Select the next slide.
+       *
+       */
+      next: function() {
+        this.flickity.next();
+      },
+      /**
+       * Select the previous slide.
+       *
+       */
+      previous: function() {
+        this.flickity.previous();
       },
       /**
        * Select a slide.
        *
        */
       select: function(index) {
-        if(this.flickity){
-          this.flickity.select(index);
-        }
+        this.flickity.select(index);
       },
 
       attached: function() {
-        this._checkIfTemplate();
-        this._observer = Polymer.dom(this.$.content).observeNodes(function(info) {
-          this._childrenChanged(info);
-        }.bind(this));
+        this.init();
       },
 
-      _childrenChanged: function(info){
-        //https://www.polymer-project.org/1.0/docs/devguide/local-dom#observe-nodes
-        if(this.queryEffectiveChildren(this.cellSelector)){
-          if(!this.flickity) {
-            if(this.queryEffectiveChildren('template')){
-              this.queryEffectiveChildren('template').render();
-              this.init();
-            }else{
-              this.init();
+      /**
+       * Use when swapping data via data-binding.
+       * Resorts slides - If not called slides wil not be in template order...
+       */
+      _resortTemplateData: function(children){
+          var children = this.getContentChildren('#content')
+          var array = [];
+          for (var i = 0; i < children.length; i++) {
+            if (children[i].tagName != "TEMPLATE") {
+              array.push(children[i]);
             }
           }
-        }
+          array.sort(this._compareNumbers);
+
+          // Add sorted Data
+          this.init();
+          this.flickity.remove( array );
+          this.flickity.insert( array );
+          this.reload();
       },
 
-      _checkIfTemplate: function(){
-        if ( this.queryEffectiveChildren('template') ) {
-          this.queryEffectiveChildren('template').addEventListener('dom-change', function() {
-            if(this.flickity){
-              if(this.flickity.getCellElements().length != this.queryAllEffectiveChildren(this.cellSelector)){
-              this.destroy();
-              this._childrenChanged();
-              }
-            }
-          }.bind(this));
-        }
+      _compareNumbers: function(a, b) {
+        return a._templateInstance.__data__.index - b._templateInstance.__data__.index;
       }
 
     });
