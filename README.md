@@ -1,6 +1,12 @@
 # \<app-flickity\>
 
-[Docs](http://ryanburns.io/#/elements/app-flickity/docs) |
-[Demo](http://ryanburns.io/#/elements/app-flickity/demo)
+# Usage
+```html
+<app-flickity>
+  <div cell>1</div>
+  <div cell>2</div>
+  <div cell>3</div>
+</app-flickity>
+```
 
-Used on [ryanburns.io](http://ryanburns.io/#/portfolio/construction-document-viewer)
+Used on [ryanburns.io](http://ryanburns.io/#/apps/construction-cams)

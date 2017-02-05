@@ -8,12 +8,30 @@
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../../paper-button/paper-button.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../app-flickity.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
+      body{
+        display: block;
+        max-width: 600px;
+        margin: 0 auto;
+      }
     </style>
   </head>
   <body>
+
+    <demo-snippet>
+      <template>
+        <app-flickity>
+          <div cell>1</div>
+          <div cell>2</div>
+          <div cell>3</div>
+        </app-flickity>
+      </template>
+    </demo-snippet>
+
 
     <dom-module id="demo-flickity">
       <template>
@@ -24,23 +42,20 @@
             margin: 0 auto;
           }
           .actions{
-            margin-top: 20px;
-
+            margin: 20px 0;
           }
         </style>
 
         <app-flickity id="flickity" hide-page-dots wrap-around>
-          <template is="dom-repeat" items="[[items]]">
+          <template id="tm" is="dom-repeat" items="[[items]]">
             <div cell>[[index]]</div>
           </template>
         </app-flickity>
-
 
         <div class="actions">
           <paper-button raised on-tap="init" type="button" name="button">init</paper-button>
           <paper-button raised on-tap="destroy" type="button" name="button">destroy</paper-button>
           <paper-button raised on-tap="previous" type="button" name="button">PREVIOUS</paper-button>
-          <paper-button raised on-tap="swap" type="button" name="button">SWAP DATA</paper-button>
           <paper-button raised on-tap="next" type="button" name="button">NEXT</paper-button>
         </div>
 
@@ -76,26 +91,46 @@
           },
           next: function(){
             this.$.flickity.next();
-          },
-          swap: function(){
-            if (this.count == 0) {
-              this.items = [
-                "http://placekitten.com/g/2000/3000",
-                "http://placekitten.com/g/2000/3000",
-                "http://placekitten.com/g/2000/3000"
-              ];
-              this.count = 1;
-            }else {
-              this.items = [ "1","1","1","1","1","1" ];
-              this.count = 0;
-
-            }
-          },
+          }
 
         });
       </script>
     </dom-module>
 
     <demo-flickity></demo-flickity>
+
+    <demo-snippet>
+      <template>
+        <style>
+         app-flickity#selectable [cell] {
+            background: #303030;
+            height: 700px;
+            width: 85%;
+
+            /* dim unselected */
+            opacity: 0.7;
+            -webkit-filter: blur(5px);
+            filter: blur(5px);
+            -webkit-transition: opacity 0.3s, -webkit-transform 0.3s, transform 0.3s, -webkit-filter 0.3s, filter 0.3s;
+            transition: opacity 0.3s, transform 0.3s, filter 0.3s;
+        }
+
+        app-flickity#selectable [cell].is-selected {
+          opacity: 1;
+          -webkit-transform: scale(1);
+          transform: scale(1);
+          -webkit-filter: none;
+          filter: none;
+        }
+        </style>
+
+        <app-flickity id="selectable">
+          <img cell src="http://placekitten.com/g/900/900">
+          <img cell src="http://placekitten.com/g/900/900">
+          <img cell src="http://placekitten.com/g/900/900">
+          <img cell src="http://placekitten.com/g/900/900">
+        </app-flickity>
+      </template>
+    </demo-snippet>
   </body>
 </html>
