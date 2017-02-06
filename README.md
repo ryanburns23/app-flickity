@@ -1,5 +1,15 @@
 # \<app-flickity\>
 
+`<app-flickity>`
+Flickity as a Polymer Element
+
+### Note
+Page dots will only work under shady dom
+
+### Flickity Doc's
+[Options](http://flickity.metafizzy.co/options.html) | [Style](http://flickity.metafizzy.co/style.html) | [API](http://flickity.metafizzy.co/api.html)
+
+
 # Usage
 ```html
 <app-flickity>
