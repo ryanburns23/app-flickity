@@ -3,6 +3,15 @@
 <link rel="import" href="flickity-styles.html">
 
 <!--
+`<app-flickity>`
+Flickity as a Polymer Element
+
+## Note
+Page dots will only work under shady dom... For now
+
+### Flickity Doc's
+
+[Options](http://flickity.metafizzy.co/options.html) | [Style](http://flickity.metafizzy.co/style.html) | [API](http://flickity.metafizzy.co/api.html)
 
 ### Styling
 
@@ -47,6 +56,14 @@ Custom property | Description | Default
         cellAlign: {
           type: String,
           value: "center"
+        },
+        /**
+         * <a target="_blank" href="http://flickity.metafizzy.co/options.html#contain">contain</a> Contains cells to carousel element to prevent excess scroll at beginning or end. Has no effect if <code>wrapAround: true</code>.
+         *
+         */
+        contain: {
+          type: Boolean,
+          value: false
         },
         /**
          * <a target="_blank" href="http://flickity.metafizzy.co/options.html#autoplay">autoPlay</a> Automatically advances to the next cell. <br><br> Auto-playing will pause when mouse is hovered over, and resume when mouse is hovered off. Auto-playing will stop when the carousel is clicked or a cell is selected.
@@ -115,7 +132,7 @@ Custom property | Description | Default
           autoPlay: this.autoPlay,
           cellSelector: this.cellSelector,
           cellAlign: this.cellAlign,
-          cellAlign: this.cellAlign,
+          contain: this.contain,
           freeScroll: this.freeScroll,
           pageDots: !this.hidePageDots,
           wrapAround: this.wrapAround
